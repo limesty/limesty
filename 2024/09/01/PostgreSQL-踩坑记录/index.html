@@ -4,10 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="部署mastodon站点, 芷沐的小窝">
-    <meta name="description" content="这篇文章是在digitalocean的2C 2G Debian 11 x64服务器下部署的，此时的mastodon版本为4.1.2。
-以下命令均以一个非root但具有sudo权限的用户的身份执行。
-准备环境1.保持系统最新、安装必要软件包s">
+    <meta name="keywords" content="PostgreSQL-踩坑记录, 芷沐的小窝">
+    <meta name="description" content="由于我前几天在搭建的 mastodon 实例上手贱取消了和闭社其他站点的互联并重新连接，丢失了所有跨站嘟文和关注者，于是想到 PostgreSQL 作为数据库管理软件是否能做到在无备份的情况下恢复短时间内误删除的数据。
+这里使用的是 Deb">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>部署mastodon站点 | 芷沐的小窝</title>
+    <title>PostgreSQL-踩坑记录 | 芷沐的小窝</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -249,12 +248,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">部署mastodon站点</h1>
+                    <h1 class="description center-align post-title">PostgreSQL-踩坑记录</h1>
                 </div>
             </div>
         </div>
@@ -290,7 +289,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-04-14
+                    2024-09-01
                 </div>
                 
 
@@ -299,14 +298,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    618
+                    184
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -329,52 +328,21 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>这篇文章是在digitalocean的2C 2G Debian 11 x64服务器下部署的，此时的mastodon版本为4.1.2。</p>
-<p>以下命令均以一个非root但具有sudo权限的用户的身份执行。</p>
-<h1 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h1><h2 id="1-保持系统最新、安装必要软件包"><a href="#1-保持系统最新、安装必要软件包" class="headerlink" title="1.保持系统最新、安装必要软件包"></a>1.保持系统最新、安装必要软件包</h2><pre class="line-numbers language-none"><code class="language-none">sudo apt update
-sudo apt upgrade
-sudo apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>在实践过程中第三条命令似乎不会造成任何改动</p>
-<h2 id="2-安装Node-16-x"><a href="#2-安装Node-16-x" class="headerlink" title="2.安装Node 16.x"></a>2.安装Node 16.x</h2><pre class="line-numbers language-none"><code class="language-none">curl -o- https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;nvm-sh&#x2F;nvm&#x2F;v0.39.3&#x2F;install.sh | bash
-source ~&#x2F;.bashrc
-nvm install --lts&#x3D;gallium
-nvm use lts&#x2F;gallium
-node -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在实践过程中直接添加apt源并安装的方式似乎会出现报错</p>
-<h2 id="3-安装Postgresql和Redis"><a href="#3-安装Postgresql和Redis" class="headerlink" title="3.安装Postgresql和Redis"></a>3.安装Postgresql和Redis</h2><pre class="line-numbers language-none"><code class="language-none">sudo wget -O &#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;postgresql.asc https:&#x2F;&#x2F;www.postgresql.org&#x2F;media&#x2F;keys&#x2F;ACCC4CF8.asc
-sudo echo &quot;deb [signed-by&#x3D;&#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;postgresql.asc] http:&#x2F;&#x2F;apt.postgresql.org&#x2F;pub&#x2F;repos&#x2F;apt $(lsb_release -cs)-pgdg main&quot; &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;postgresql.list
-sudo apt update
-sudo apt install postgresql redis-server<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-补充安装Mastodon文档要求的其它包"><a href="#4-补充安装Mastodon文档要求的其它包" class="headerlink" title="4.补充安装Mastodon文档要求的其它包"></a>4.补充安装Mastodon文档要求的其它包</h2><pre class="line-numbers language-none"><code class="language-none">sudo apt update
-sudo apt install -y \
- imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git-core \
- g++ libprotobuf-dev protobuf-compiler pkg-config nodejs gcc autoconf \
- bison build-essential libssl-dev libyaml-dev libreadline6-dev \
- zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev \
- nginx redis-server redis-tools postgresql postgresql-contrib \
- certbot python3-certbot-nginx libidn11-dev libicu-dev libjemalloc-dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="5-安装Yarn"><a href="#5-安装Yarn" class="headerlink" title="5.安装Yarn"></a>5.安装Yarn</h2><pre class="line-numbers language-none"><code class="language-none">npm install --global yarn
-corepack enable
-yarn set version classic<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="6-安装Ruby"><a href="#6-安装Ruby" class="headerlink" title="6.安装Ruby"></a>6.安装Ruby</h2><pre class="line-numbers language-none"><code class="language-none">cd
-git clone https:&#x2F;&#x2F;github.com&#x2F;rbenv&#x2F;rbenv.git ~&#x2F;.rbenv
-cd ~&#x2F;.rbenv &amp;&amp; src&#x2F;configure &amp;&amp; make -C src
-echo &#39;export PATH&#x3D;&quot;$HOME&#x2F;.rbenv&#x2F;bin:$PATH&quot;&#39; &gt;&gt; ~&#x2F;.bashrc
-echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~&#x2F;.bashrc
-exec bash
-git clone https:&#x2F;&#x2F;github.com&#x2F;rbenv&#x2F;ruby-build.git ~&#x2F;.rbenv&#x2F;plugins&#x2F;ruby-build
-RUBY_CONFIGURE_OPTS&#x3D;--with-jemalloc rbenv install 3.0.6
-rbenv global 3.0.6
-gem install bundler --no-document<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>注意：随着mastodon版本变化，需要的rbenv版本也随之改变<br>安装过程可能需要耗费相当长时间</p>
-<h2 id="7-创建数据库用户"><a href="#7-创建数据库用户" class="headerlink" title="7.创建数据库用户"></a>7.创建数据库用户</h2><pre class="line-numbers language-none"><code class="language-none">sudo -u postgres psql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>在输入下面的SQL语句时，请注意替换对应的用户名及密码。如保持USER字段为mastodon不变，后续可能出现使用密码无法登录的情况（不保证不是因为我输错密码）</p>
-<pre class="line-numbers language-none"><code class="language-none">CREATE USER mastodon PASSWORD &#39;XXXXXXX&#39; CREATEDB;
-\q<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="部署Mastodon"><a href="#部署Mastodon" class="headerlink" title="部署Mastodon"></a>部署Mastodon</h1><h2 id="1-拉取源码存储库"><a href="#1-拉取源码存储库" class="headerlink" title="1.拉取源码存储库"></a>1.拉取源码存储库</h2><pre class="line-numbers language-none"><code class="language-none">cd
-git clone https:&#x2F;&#x2F;github.com&#x2F;mastodon&#x2F;mastodon.git live &amp;&amp; cd live
-git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2.安装依赖"></a>2.安装依赖</h2>
+                <p>由于我前几天在搭建的 mastodon 实例上手贱取消了和闭社其他站点的互联并重新连接，丢失了所有跨站嘟文和关注者，于是想到 PostgreSQL 作为数据库管理软件是否能做到在无备份的情况下恢复短时间内误删除的数据。</p>
+<p>这里使用的是 Debian 11 上的 PostgreSQL 13.16。</p>
+<h1 id="pg-resetwal"><a href="#pg-resetwal" class="headerlink" title="pg_resetwal"></a>pg_resetwal</h1><p><code>pg_resetwal</code> 用于在系统数据损坏的时候重新标志日志的位置从而实现回滚。</p>
+<ul>
+<li>pg_resetwal 恢复之后，WAL 日志整体被清理。</li>
+<li>truncate 表删除操作无法进行恢复。</li>
+</ul>
+<h1 id="查询当前日志的写入位置"><a href="#查询当前日志的写入位置" class="headerlink" title="查询当前日志的写入位置"></a>查询当前日志的写入位置</h1><pre class="line-numbers language-none"><code class="language-none">postgres&#x3D;# select pg_current_wal_lsn(),pg_walfile_name(pg_current_wal_lsn()),pg_walfile_name_offset(pg_current_wal_lsn());
+ pg_current_wal_lsn |     pg_walfile_name      |       pg_walfile_name_offset       
+--------------------+--------------------------+------------------------------------
+ 1&#x2F;5C2B8A18         | 00000001000000010000005C | (00000001000000010000005C,2853400)
+(1 row)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中</p>
+
                 
             </div>
             <hr/>
@@ -431,54 +399,18 @@ git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/07/29/%E5%9C%A8Ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AEopenCV/">
+                <a href="/2024/09/01/PostgreSQL-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="在Ubuntu下配置openCV">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="PostgreSQL-踩坑记录">
                         
-                        <span class="card-title">在Ubuntu下配置openCV</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-29
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Limesty
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/01/31/hello-world/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
-                        
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">PostgreSQL-踩坑记录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -489,7 +421,45 @@ git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<s
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-31
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Limesty
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/03/30/Latex-%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Latex使用过程中的记录">
+                        
+                        <span class="card-title">Latex使用过程中的记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-03-30
                             </span>
                         <span class="publish-author">
                             

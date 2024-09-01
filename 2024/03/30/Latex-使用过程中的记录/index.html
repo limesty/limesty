@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="在Ubuntu下配置openCV, 芷沐的小窝">
-    <meta name="description" content="这篇文章参考了https://blog.csdn.net/Cappuccino_jay/article/details/125220734无论是在wsl2、物理机还是虚拟机上，安装过程都基本一致。
-$ sudo apt-get update">
+    <meta name="keywords" content="Latex使用过程中的记录, 芷沐的小窝">
+    <meta name="description" content="自定义行高和列宽tabular环境中参数使用|m&amp;#123;width&amp;#125;&amp;lt;&amp;#123;\centering&amp;#125;|m&amp;#123;width&amp;#125;&amp;lt;&amp;#123;\centering&amp;#125;|可以实现自定义">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ $ sudo apt-get update">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>在Ubuntu下配置openCV | 芷沐的小窝</title>
+    <title>Latex使用过程中的记录 | 芷沐的小窝</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -248,12 +247,12 @@ $ sudo apt-get update">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">在Ubuntu下配置openCV</h1>
+                    <h1 class="description center-align post-title">Latex使用过程中的记录</h1>
                 </div>
             </div>
         </div>
@@ -289,7 +288,7 @@ $ sudo apt-get update">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-07-29
+                    2024-03-30
                 </div>
                 
 
@@ -298,14 +297,14 @@ $ sudo apt-get update">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    123
+                    664
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -328,13 +327,57 @@ $ sudo apt-get update">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>这篇文章参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/Cappuccino_jay/article/details/125220734">https://blog.csdn.net/Cappuccino_jay/article/details/125220734</a><br>无论是在wsl2、物理机还是虚拟机上，安装过程都基本一致。</p>
-<pre class="line-numbers language-none"><code class="language-none">$ sudo apt-get update                                      #更新软件源
-$ sudo apt-get install build-essential                     #安装编译所需的库
-$ sudo apt-get install cmake pkg-config git                #安装一些必要的工具
-$ sudo apt-get install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev python-dev-is-python3 python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libtiff5-dev libswscale-dev libjasper-dev libdc1394-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+                <h1 id="自定义行高和列宽"><a href="#自定义行高和列宽" class="headerlink" title="自定义行高和列宽"></a>自定义行高和列宽</h1><p><code>tabular</code>环境中参数使用<code>|m&#123;width&#125;&lt;&#123;\centering&#125;|m&#123;width&#125;&lt;&#123;\centering&#125;|</code>可以实现自定义列宽并居中，每一列之间均有竖线。</p>
+<p>由于分式的高度与文本不同，为了美观需要调整表格的高度。</p>
+<p>最开始我找到了<code>\rule&#123;width&#125;&#123;height&#125;</code>这一语句，直接使用时发现首列竖直居中不起作用。</p>
+<pre class="line-numbers language-none"><code class="language-none">\begin&#123;table&#125;[H]
+	\centering
+	\begin&#123;tabular&#125;&#123;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;
+		\hline
+		\rule&#123;0pt&#125;&#123;15pt&#125;$\sigma$已知 &amp; $\sigma$未知 \\ \hline
+		\rule&#123;0pt&#125;&#123;25pt&#125;$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \hline
+		\rule&#123;0pt&#125;&#123;25pt&#125;$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \hline
+	\end&#123;tabular&#125;
+\end&#123;table&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="line-numbers language-none"><code class="language-none">code snippet<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>一种解决办法是在左侧添加一栏，并使其宽度为<code>0pt</code>，如下所示：</p>
+<pre class="line-numbers language-none"><code class="language-none">\begin&#123;table&#125;[H]
+	\centering
+	\begin&#123;tabular&#125;&#123;m&#123;0pt&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;
+		\cline&#123;2-3&#125;
+		\rule&#123;0pt&#125;&#123;20pt&#125; &amp; $\sigma$已知 &amp; $\sigma$未知 \\ \cline&#123;2-3&#125;
+		\rule&#123;0pt&#125;&#123;25pt&#125; &amp; $\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \cline&#123;2-3&#125;
+		\rule&#123;0pt&#125;&#123;25pt&#125; &amp; $z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \cline&#123;2-3&#125;
+	\end&#123;tabular&#125;
+\end&#123;table&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但编译后发现添加的一栏宽度并不为 0，此时表格在文档中有微小的偏移。</p>
+<p>尝试换用<code>tabularray</code>环境，代码如下所示：</p>
+<pre class="line-numbers language-none"><code class="language-none">\begin&#123;tblr&#125;&#123;
+	colspec &#x3D; &#123;|Q[c,wd&#x3D;40mm]|Q[c,wd&#x3D;40mm]|&#125;,
+	rowspec &#x3D; &#123;Q[m,ht&#x3D;5mm]Q[m,ht&#x3D;10mm]Q[m,ht&#x3D;10mm]&#125;
+&#125;
+	\hline
+	$\sigma$已知 &amp; $\sigma$未知 \\
+	\hline
+	$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\
+	\hline
+	$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\
+	\hline
+\end&#123;tblr&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在参数中可以直接设置列宽和行高以及对齐方式。也可以采用另一种方式单独指定行高，即：</p>
+<pre class="line-numbers language-none"><code class="language-none">\begin&#123;tblr&#125;&#123;
+	colspec &#x3D; &#123;|Q[c,wd&#x3D;40mm]|Q[c,wd&#x3D;40mm]|&#125;,
+&#125;
+	\hline
+	$\sigma$已知 &amp; $\sigma$未知 \\
+	\hline
+	\SetRow&#123;rowsep&#x3D;10pt&#125;$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\
+	\hline
+	\SetRow&#123;rowsep&#x3D;10pt&#125;$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\
+	\hline
+\end&#123;tblr&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -395,13 +438,13 @@ $ sudo apt-get install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-d
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/03/30/Latex%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%AE%B0%E5%BD%95/">
+                <a href="/2024/09/01/PostgreSQL-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Latex使用过程中的记录">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="PostgreSQL-踩坑记录">
                         
-                        <span class="card-title">Latex使用过程中的记录</span>
+                        <span class="card-title">PostgreSQL-踩坑记录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -412,7 +455,7 @@ $ sudo apt-get install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-d
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-03-30
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-09-01
                         </span>
                         <span class="publish-author">
                             
@@ -432,13 +475,13 @@ $ sudo apt-get install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-d
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/04/14/%E9%83%A8%E7%BD%B2mastodon%E7%AB%99%E7%82%B9/">
+                <a href="/2023/07/29/%E5%9C%A8-Ubuntu-%E4%B8%8B%E9%85%8D%E7%BD%AE-openCV/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="部署mastodon站点">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="在Ubuntu下配置openCV">
                         
-                        <span class="card-title">部署mastodon站点</span>
+                        <span class="card-title">在Ubuntu下配置openCV</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -449,7 +492,7 @@ $ sudo apt-get install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-d
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-29
                             </span>
                         <span class="publish-author">
                             
