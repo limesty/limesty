@@ -276,7 +276,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    182
+                    184
                 </div>
                 
 
@@ -292,6 +292,9 @@
         </div>
         <hr class="clearfix">
 
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
         
 
         
@@ -310,7 +313,11 @@
 <li>pg_resetwal 恢复之后，WAL 日志整体被清理。</li>
 <li>truncate 表删除操作无法进行恢复。</li>
 </ul>
-<h1 id="查询当前日志的写入位置"><a href="#查询当前日志的写入位置" class="headerlink" title="查询当前日志的写入位置"></a>查询当前日志的写入位置</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">postgres=# select pg_current_wal_lsn(),pg_walfile_name(pg_current_wal_lsn()),pg_walfile_name_offset(pg_current_wal_lsn());</span><br><span class="line"> pg_current_wal_lsn |     pg_walfile_name      |       pg_walfile_name_offset       </span><br><span class="line">--------------------+--------------------------+------------------------------------</span><br><span class="line"> 1/5C2B8A18         | 00000001000000010000005C | (00000001000000010000005C,2853400)</span><br><span class="line">(1 row)</span><br></pre></td></tr></table></figure>
+<h1 id="查询当前日志的写入位置"><a href="#查询当前日志的写入位置" class="headerlink" title="查询当前日志的写入位置"></a>查询当前日志的写入位置</h1><pre class="line-numbers language-none"><code class="language-none">postgres&#x3D;# select pg_current_wal_lsn(),pg_walfile_name(pg_current_wal_lsn()),pg_walfile_name_offset(pg_current_wal_lsn());
+ pg_current_wal_lsn |     pg_walfile_name      |       pg_walfile_name_offset       
+--------------------+--------------------------+------------------------------------
+ 1&#x2F;5C2B8A18         | 00000001000000010000005C | (00000001000000010000005C,2853400)
+(1 row)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>其中</p>
 
@@ -454,6 +461,9 @@
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
 
 
 <!-- 代码语言 -->
