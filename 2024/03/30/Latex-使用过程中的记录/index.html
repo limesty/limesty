@@ -275,7 +275,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    664
+                    640
                 </div>
                 
 
@@ -292,9 +292,6 @@
         <hr class="clearfix">
 
         
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
-        
 
         
         <!-- 代码块折行 -->
@@ -308,54 +305,17 @@
                 <h1 id="自定义行高和列宽"><a href="#自定义行高和列宽" class="headerlink" title="自定义行高和列宽"></a>自定义行高和列宽</h1><p><code>tabular</code>环境中参数使用<code>|m&#123;width&#125;&lt;&#123;\centering&#125;|m&#123;width&#125;&lt;&#123;\centering&#125;|</code>可以实现自定义列宽并居中，每一列之间均有竖线。</p>
 <p>由于分式的高度与文本不同，为了美观需要调整表格的高度。</p>
 <p>最开始我找到了<code>\rule&#123;width&#125;&#123;height&#125;</code>这一语句，直接使用时发现首列竖直居中不起作用。</p>
-<pre class="line-numbers language-none"><code class="language-none">\begin&#123;table&#125;[H]
-	\centering
-	\begin&#123;tabular&#125;&#123;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;
-		\hline
-		\rule&#123;0pt&#125;&#123;15pt&#125;$\sigma$已知 &amp; $\sigma$未知 \\ \hline
-		\rule&#123;0pt&#125;&#123;25pt&#125;$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \hline
-		\rule&#123;0pt&#125;&#123;25pt&#125;$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \hline
-	\end&#123;tabular&#125;
-\end&#123;table&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;table&#125;[H]</span><br><span class="line">  \centering</span><br><span class="line">  \begin&#123;tabular&#125;&#123;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;</span><br><span class="line">    \hline</span><br><span class="line">    \rule&#123;0pt&#125;&#123;15pt&#125;$\sigma$已知 &amp; $\sigma$未知 \\ \hline</span><br><span class="line">    \rule&#123;0pt&#125;&#123;25pt&#125;$\sigma_M=\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M=\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \hline</span><br><span class="line">    \rule&#123;0pt&#125;&#123;25pt&#125;$z=\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t=\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \hline</span><br><span class="line">  \end&#123;tabular&#125;</span><br><span class="line">\end&#123;table&#125;</span><br></pre></td></tr></table></figure>
 
 <p>一种解决办法是在左侧添加一栏，并使其宽度为<code>0pt</code>，如下所示：</p>
-<pre class="line-numbers language-none"><code class="language-none">\begin&#123;table&#125;[H]
-	\centering
-	\begin&#123;tabular&#125;&#123;m&#123;0pt&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;
-		\cline&#123;2-3&#125;
-		\rule&#123;0pt&#125;&#123;20pt&#125; &amp; $\sigma$已知 &amp; $\sigma$未知 \\ \cline&#123;2-3&#125;
-		\rule&#123;0pt&#125;&#123;25pt&#125; &amp; $\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \cline&#123;2-3&#125;
-		\rule&#123;0pt&#125;&#123;25pt&#125; &amp; $z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \cline&#123;2-3&#125;
-	\end&#123;tabular&#125;
-\end&#123;table&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;table&#125;[H]</span><br><span class="line">  \centering</span><br><span class="line">  \begin&#123;tabular&#125;&#123;m&#123;0pt&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|m&#123;4cm&#125;&lt;&#123;\centering&#125;|&#125;</span><br><span class="line">    \cline&#123;2-3&#125;</span><br><span class="line">    \rule&#123;0pt&#125;&#123;20pt&#125; &amp; $\sigma$已知 &amp; $\sigma$未知 \\ \cline&#123;2-3&#125;</span><br><span class="line">    \rule&#123;0pt&#125;&#123;25pt&#125; &amp; $\sigma_M=\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M=\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\ \cline&#123;2-3&#125;</span><br><span class="line">    \rule&#123;0pt&#125;&#123;25pt&#125; &amp; $z=\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t=\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\ \cline&#123;2-3&#125;</span><br><span class="line">  \end&#123;tabular&#125;</span><br><span class="line">\end&#123;table&#125;</span><br></pre></td></tr></table></figure>
 
 <p>但编译后发现添加的一栏宽度并不为 0，此时表格在文档中有微小的偏移。</p>
 <p>尝试换用<code>tabularray</code>环境，代码如下所示：</p>
-<pre class="line-numbers language-none"><code class="language-none">\begin&#123;tblr&#125;&#123;
-	colspec &#x3D; &#123;|Q[c,wd&#x3D;40mm]|Q[c,wd&#x3D;40mm]|&#125;,
-	rowspec &#x3D; &#123;Q[m,ht&#x3D;5mm]Q[m,ht&#x3D;10mm]Q[m,ht&#x3D;10mm]&#125;
-&#125;
-	\hline
-	$\sigma$已知 &amp; $\sigma$未知 \\
-	\hline
-	$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\
-	\hline
-	$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\
-	\hline
-\end&#123;tblr&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;tblr&#125;&#123;</span><br><span class="line">  colspec = &#123;|Q[c,wd=40mm]|Q[c,wd=40mm]|&#125;,</span><br><span class="line">  rowspec = &#123;Q[m,ht=5mm]Q[m,ht=10mm]Q[m,ht=10mm]&#125;</span><br><span class="line">&#125;</span><br><span class="line">  \hline</span><br><span class="line">  $\sigma$已知 &amp; $\sigma$未知 \\</span><br><span class="line">  \hline</span><br><span class="line">  $\sigma_M=\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M=\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\</span><br><span class="line">  \hline</span><br><span class="line">  $z=\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t=\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\</span><br><span class="line">  \hline</span><br><span class="line">\end&#123;tblr&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在参数中可以直接设置列宽和行高以及对齐方式。也可以采用另一种方式单独指定行高，即：</p>
-<pre class="line-numbers language-none"><code class="language-none">\begin&#123;tblr&#125;&#123;
-	colspec &#x3D; &#123;|Q[c,wd&#x3D;40mm]|Q[c,wd&#x3D;40mm]|&#125;,
-&#125;
-	\hline
-	$\sigma$已知 &amp; $\sigma$未知 \\
-	\hline
-	\SetRow&#123;rowsep&#x3D;10pt&#125;$\sigma_M&#x3D;\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M&#x3D;\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\
-	\hline
-	\SetRow&#123;rowsep&#x3D;10pt&#125;$z&#x3D;\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t&#x3D;\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\
-	\hline
-\end&#123;tblr&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;tblr&#125;&#123;</span><br><span class="line">  colspec = &#123;|Q[c,wd=40mm]|Q[c,wd=40mm]|&#125;,</span><br><span class="line">&#125;</span><br><span class="line">  \hline</span><br><span class="line">  $\sigma$已知 &amp; $\sigma$未知 \\</span><br><span class="line">  \hline</span><br><span class="line">  \SetRow&#123;rowsep=10pt&#125;$\sigma_M=\dfrac&#123;\sigma&#125;&#123;\sqrt&#123;n&#125;&#125;$ &amp; $s_M=\dfrac&#123;s&#125;&#123;\sqrt&#123;n&#125;&#125;$ \\</span><br><span class="line">  \hline</span><br><span class="line">  \SetRow&#123;rowsep=10pt&#125;$z=\dfrac&#123;M-\mu&#125;&#123;\sigma_M&#125;$ &amp; $t=\dfrac&#123;M-\mu&#125;&#123;s_M&#125;$ \\</span><br><span class="line">  \hline</span><br><span class="line">\end&#123;tblr&#125;</span><br></pre></td></tr></table></figure>
                 
             </div>
             <hr/>
@@ -495,9 +455,6 @@
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
 
 <!-- 代码语言 -->
 
@@ -611,7 +568,7 @@
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2024</span>
+                <span id="year">2022-2025</span>
             
             <a href="/about" target="_blank">芷沐</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -671,7 +628,7 @@
 
 
 
-    <a href="https://www.zhihu.com/people/li-jia-qi-24-12" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/li-jia-qi-24-12" data-position="top" data-delay="50">
+    <a href="https://www.zhihu.com/people/73-78-73-97" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/73-78-73-97" data-position="top" data-delay="50">
         <i class="fab fa-zhihu1">知</i>
     </a>
 

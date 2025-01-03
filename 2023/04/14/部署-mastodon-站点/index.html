@@ -7,7 +7,7 @@
     <meta name="keywords" content="部署mastodon站点, 芷沐的小窝">
     <meta name="description" content="这篇文章是在digitalocean的2C 2G Debian 11 x64服务器下部署的，此时的mastodon版本为4.1.2。
 以下命令均以一个非root但具有sudo权限的用户的身份执行。
-准备环境1.保持系统最新、安装必要软件包s">
+准备环境1.保持系统最新、安装必要软件包1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -277,14 +277,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    618
+                    539
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    2 分
                 </div>
                 
 
@@ -293,9 +293,6 @@
         </div>
         <hr class="clearfix">
 
-        
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.min.css">
         
 
         
@@ -309,49 +306,19 @@
             <div id="articleContent">
                 <p>这篇文章是在digitalocean的2C 2G Debian 11 x64服务器下部署的，此时的mastodon版本为4.1.2。</p>
 <p>以下命令均以一个非root但具有sudo权限的用户的身份执行。</p>
-<h1 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h1><h2 id="1-保持系统最新、安装必要软件包"><a href="#1-保持系统最新、安装必要软件包" class="headerlink" title="1.保持系统最新、安装必要软件包"></a>1.保持系统最新、安装必要软件包</h2><pre class="line-numbers language-none"><code class="language-none">sudo apt update
-sudo apt upgrade
-sudo apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h1><h2 id="1-保持系统最新、安装必要软件包"><a href="#1-保持系统最新、安装必要软件包" class="headerlink" title="1.保持系统最新、安装必要软件包"></a>1.保持系统最新、安装必要软件包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates</span><br></pre></td></tr></table></figure>
 <p>在实践过程中第三条命令似乎不会造成任何改动</p>
-<h2 id="2-安装Node-16-x"><a href="#2-安装Node-16-x" class="headerlink" title="2.安装Node 16.x"></a>2.安装Node 16.x</h2><pre class="line-numbers language-none"><code class="language-none">curl -o- https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;nvm-sh&#x2F;nvm&#x2F;v0.39.3&#x2F;install.sh | bash
-source ~&#x2F;.bashrc
-nvm install --lts&#x3D;gallium
-nvm use lts&#x2F;gallium
-node -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-安装Node-16-x"><a href="#2-安装Node-16-x" class="headerlink" title="2.安装Node 16.x"></a>2.安装Node 16.x</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash</span><br><span class="line">source ~/.bashrc</span><br><span class="line">nvm install --lts=gallium</span><br><span class="line">nvm use lts/gallium</span><br><span class="line">node -v</span><br></pre></td></tr></table></figure>
 <p>在实践过程中直接添加apt源并安装的方式似乎会出现报错</p>
-<h2 id="3-安装Postgresql和Redis"><a href="#3-安装Postgresql和Redis" class="headerlink" title="3.安装Postgresql和Redis"></a>3.安装Postgresql和Redis</h2><pre class="line-numbers language-none"><code class="language-none">sudo wget -O &#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;postgresql.asc https:&#x2F;&#x2F;www.postgresql.org&#x2F;media&#x2F;keys&#x2F;ACCC4CF8.asc
-sudo echo &quot;deb [signed-by&#x3D;&#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;postgresql.asc] http:&#x2F;&#x2F;apt.postgresql.org&#x2F;pub&#x2F;repos&#x2F;apt $(lsb_release -cs)-pgdg main&quot; &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;postgresql.list
-sudo apt update
-sudo apt install postgresql redis-server<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-补充安装Mastodon文档要求的其它包"><a href="#4-补充安装Mastodon文档要求的其它包" class="headerlink" title="4.补充安装Mastodon文档要求的其它包"></a>4.补充安装Mastodon文档要求的其它包</h2><pre class="line-numbers language-none"><code class="language-none">sudo apt update
-sudo apt install -y \
- imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git-core \
- g++ libprotobuf-dev protobuf-compiler pkg-config nodejs gcc autoconf \
- bison build-essential libssl-dev libyaml-dev libreadline6-dev \
- zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev \
- nginx redis-server redis-tools postgresql postgresql-contrib \
- certbot python3-certbot-nginx libidn11-dev libicu-dev libjemalloc-dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="5-安装Yarn"><a href="#5-安装Yarn" class="headerlink" title="5.安装Yarn"></a>5.安装Yarn</h2><pre class="line-numbers language-none"><code class="language-none">npm install --global yarn
-corepack enable
-yarn set version classic<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="6-安装Ruby"><a href="#6-安装Ruby" class="headerlink" title="6.安装Ruby"></a>6.安装Ruby</h2><pre class="line-numbers language-none"><code class="language-none">cd
-git clone https:&#x2F;&#x2F;github.com&#x2F;rbenv&#x2F;rbenv.git ~&#x2F;.rbenv
-cd ~&#x2F;.rbenv &amp;&amp; src&#x2F;configure &amp;&amp; make -C src
-echo &#39;export PATH&#x3D;&quot;$HOME&#x2F;.rbenv&#x2F;bin:$PATH&quot;&#39; &gt;&gt; ~&#x2F;.bashrc
-echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~&#x2F;.bashrc
-exec bash
-git clone https:&#x2F;&#x2F;github.com&#x2F;rbenv&#x2F;ruby-build.git ~&#x2F;.rbenv&#x2F;plugins&#x2F;ruby-build
-RUBY_CONFIGURE_OPTS&#x3D;--with-jemalloc rbenv install 3.0.6
-rbenv global 3.0.6
-gem install bundler --no-document<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-安装Postgresql和Redis"><a href="#3-安装Postgresql和Redis" class="headerlink" title="3.安装Postgresql和Redis"></a>3.安装Postgresql和Redis</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo wget -O /usr/share/keyrings/postgresql.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc</span><br><span class="line">sudo echo &quot;deb [signed-by=/usr/share/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main&quot; &gt; /etc/apt/sources.list.d/postgresql.list</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install postgresql redis-server</span><br></pre></td></tr></table></figure>
+<h2 id="4-补充安装Mastodon文档要求的其它包"><a href="#4-补充安装Mastodon文档要求的其它包" class="headerlink" title="4.补充安装Mastodon文档要求的其它包"></a>4.补充安装Mastodon文档要求的其它包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install -y \</span><br><span class="line"> imagemagick ffmpeg libpq-dev libxml2-dev libxslt1-dev file git-core \</span><br><span class="line"> g++ libprotobuf-dev protobuf-compiler pkg-config nodejs gcc autoconf \</span><br><span class="line"> bison build-essential libssl-dev libyaml-dev libreadline6-dev \</span><br><span class="line"> zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev \</span><br><span class="line"> nginx redis-server redis-tools postgresql postgresql-contrib \</span><br><span class="line"> certbot python3-certbot-nginx libidn11-dev libicu-dev libjemalloc-dev</span><br></pre></td></tr></table></figure>
+<h2 id="5-安装Yarn"><a href="#5-安装Yarn" class="headerlink" title="5.安装Yarn"></a>5.安装Yarn</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install --global yarn</span><br><span class="line">corepack enable</span><br><span class="line">yarn set version classic</span><br></pre></td></tr></table></figure>
+<h2 id="6-安装Ruby"><a href="#6-安装Ruby" class="headerlink" title="6.安装Ruby"></a>6.安装Ruby</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd</span><br><span class="line">git clone https://github.com/rbenv/rbenv.git ~/.rbenv</span><br><span class="line">cd ~/.rbenv &amp;&amp; src/configure &amp;&amp; make -C src</span><br><span class="line">echo &#x27;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#x27; &gt;&gt; ~/.bashrc</span><br><span class="line">echo &#x27;eval &quot;$(rbenv init -)&quot;&#x27; &gt;&gt; ~/.bashrc</span><br><span class="line">exec bash</span><br><span class="line">git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build</span><br><span class="line">RUBY_CONFIGURE_OPTS=--with-jemalloc rbenv install 3.0.6</span><br><span class="line">rbenv global 3.0.6</span><br><span class="line">gem install bundler --no-document</span><br></pre></td></tr></table></figure>
 <p>注意：随着mastodon版本变化，需要的rbenv版本也随之改变<br>安装过程可能需要耗费相当长时间</p>
-<h2 id="7-创建数据库用户"><a href="#7-创建数据库用户" class="headerlink" title="7.创建数据库用户"></a>7.创建数据库用户</h2><pre class="line-numbers language-none"><code class="language-none">sudo -u postgres psql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="7-创建数据库用户"><a href="#7-创建数据库用户" class="headerlink" title="7.创建数据库用户"></a>7.创建数据库用户</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br></pre></td></tr></table></figure>
 <p>在输入下面的SQL语句时，请注意替换对应的用户名及密码。如保持USER字段为mastodon不变，后续可能出现使用密码无法登录的情况（不保证不是因为我输错密码）</p>
-<pre class="line-numbers language-none"><code class="language-none">CREATE USER mastodon PASSWORD &#39;XXXXXXX&#39; CREATEDB;
-\q<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="部署Mastodon"><a href="#部署Mastodon" class="headerlink" title="部署Mastodon"></a>部署Mastodon</h1><h2 id="1-拉取源码存储库"><a href="#1-拉取源码存储库" class="headerlink" title="1.拉取源码存储库"></a>1.拉取源码存储库</h2><pre class="line-numbers language-none"><code class="language-none">cd
-git clone https:&#x2F;&#x2F;github.com&#x2F;mastodon&#x2F;mastodon.git live &amp;&amp; cd live
-git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER mastodon PASSWORD &#x27;XXXXXXX&#x27; CREATEDB;</span><br><span class="line">\q</span><br></pre></td></tr></table></figure>
+<h1 id="部署Mastodon"><a href="#部署Mastodon" class="headerlink" title="部署Mastodon"></a>部署Mastodon</h1><h2 id="1-拉取源码存储库"><a href="#1-拉取源码存储库" class="headerlink" title="1.拉取源码存储库"></a>1.拉取源码存储库</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd</span><br><span class="line">git clone https://github.com/mastodon/mastodon.git live &amp;&amp; cd live</span><br><span class="line">git checkout $(git tag -l | grep -v &#x27;rc[0-9]*$&#x27; | sort -V | tail -n 1)</span><br></pre></td></tr></table></figure>
 <h2 id="2-安装依赖"><a href="#2-安装依赖" class="headerlink" title="2.安装依赖"></a>2.安装依赖</h2>
                 
             </div>
@@ -492,9 +459,6 @@ git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<s
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 
-  <!-- 是否加载使用自带的 prismjs. -->
-  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
-
 
 <!-- 代码语言 -->
 
@@ -608,7 +572,7 @@ git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<s
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2024</span>
+                <span id="year">2022-2025</span>
             
             <a href="/about" target="_blank">芷沐</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -668,7 +632,7 @@ git checkout $(git tag -l | grep -v &#39;rc[0-9]*$&#39; | sort -V | tail -n 1)<s
 
 
 
-    <a href="https://www.zhihu.com/people/li-jia-qi-24-12" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/li-jia-qi-24-12" data-position="top" data-delay="50">
+    <a href="https://www.zhihu.com/people/73-78-73-97" class="tooltipped" target="_blank" data-tooltip="关注我的知乎: https://www.zhihu.com/people/73-78-73-97" data-position="top" data-delay="50">
         <i class="fab fa-zhihu1">知</i>
     </a>
 
